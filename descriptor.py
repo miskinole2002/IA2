@@ -9,7 +9,7 @@ def GLCM(image_path):
     
     Image=cv2.imread(image_path,0) #quand on met 0 il convertira l image en noir sur blanc automatiquement 
     #creation de la matrice de co_occurence
-    co_matrix=graycomatrix(Image,[1],[0,np.pi/4],None,symmetric=False,normed=False) 
+    co_matrix=graycomatrix(Image,[1],[np.pi/4],None,symmetric=False,normed=False) 
     # sur le level c est mieux de mettre None pourqu'il considere toutes les valeur de pixel soit en 8 bits ou 6 bits
     # calcul des valeurs 
 
@@ -28,3 +28,4 @@ def GLCM(image_path):
 def bitdesc(image_path):
     Image=cv2.imread(image_path,0)
     return bio_taxo(Image)
+

@@ -1,6 +1,7 @@
 
 import cv2,os, numpy as np
-from IA2.descriptor import GLCM,bitdesc
+from descriptor import GLCM,bitdesc
+from PIL import Image
 
 
 def extract_features(image_path,descriptor):
@@ -33,24 +34,26 @@ def procces_datasets(root_folder):
 
                 #GLCM
 
-                features_GLCM=GLCM(path_base)
-                features_GLCM=features_GLCM+[folder_name,path_base]
-                all_features_GLCM.append(features_GLCM)
-                print(all_features_GLCM)
-                print("\n*2 bit ")
+                # features_GLCM=GLCM(path_base)
+                # features_GLCM=features_GLCM+[folder_name,path_base]
+                # all_features_GLCM.append(features_GLCM)
+               
+              
                 #bitdesc
-                features_bitdesc=bitdesc(path_base)
-                features_bitdesc=features_bitdesc+[folder_name,path_base]
-                all_features_bit.append(features_bitdesc)
-                print(all_features_bit)
+                try:
+                    features_bitdesc=bitdesc(path_base)
+                    features_bitdesc=features_bitdesc+[folder_name,path_base]
+                    all_features_bit.append(features_bitdesc)
+                except Exception as e:
+                       print(e)
 
-    signatures_GLCM=np.array(all_features_GLCM)
-    np.save('signatures_GLCM.npy',signatures_GLCM)
+    # signatures_GLCM=np.array(all_features_GLCM)
+    # np.save('signatures_GLCM.npy',signatures_GLCM)
         #bitdesc
     signatures_Bitdesc=np.array(all_features_bit)
-    np.save('signatures_GLCM.npy',signatures_Bitdesc)
+    np.save('signatures_bitdesc.npy',signatures_Bitdesc)
 
 
     print ('bien enregistre ')
 
-procces_datasets('.\image')
+procces_datasets('.\datasets')
