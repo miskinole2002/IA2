@@ -13,6 +13,8 @@ def extract_features(image_path,descriptor):
     else:
         pass
 descriptors=[GLCM,bitdesc]
+
+class_list={'fire':1,'nofire':2,'iris-setosa':3,'iris-versicolour':4,'iris-virginica':5}
 def procces_datasets(root_folder):
     all_features_GLCM=[]
     all_features_bit=[]
@@ -32,26 +34,26 @@ def procces_datasets(root_folder):
                 folder_name=os.path.basename(os.path.dirname(path_base))
                 #features=extract_features(relative_path,GLCM)
 
-                #GLCM
+                # GLCM
 
                 # features_GLCM=GLCM(path_base)
-                # features_GLCM=features_GLCM+[folder_name,path_base]
+                # features_GLCM=features_GLCM+[class_list[folder_name],path_base,folder_name]
                 # all_features_GLCM.append(features_GLCM)
                
               
-                #bitdesc
+                # #bitdesc
                 try:
                     features_bitdesc=bitdesc(path_base)
-                    features_bitdesc=features_bitdesc+[folder_name,path_base]
+                    features_bitdesc=features_bitdesc+[class_list[folder_name]]
                     all_features_bit.append(features_bitdesc)
                 except Exception as e:
                        print(e)
 
     # signatures_GLCM=np.array(all_features_GLCM)
-    # np.save('signatures_GLCM.npy',signatures_GLCM)
+    # np.save('signatures_GLCM4.npy',signatures_GLCM)
         #bitdesc
     signatures_Bitdesc=np.array(all_features_bit)
-    np.save('signatures_bitdesc.npy',signatures_Bitdesc)
+    np.save('signatures_bitdesc2.npy',signatures_Bitdesc)
 
 
     print ('bien enregistre ')
