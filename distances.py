@@ -67,3 +67,16 @@ def retrieve_similar_image2(features_db, query_features, distance, num_results):
             distances.append((img_path, dist, label))
     distances.sort(key=lambda x: x[1])
     return distances[ : num_results]
+
+def retrieve_with_image_name(features_db, num_results,mod):
+    distances = []
+    for instance in features_db:
+            features, label, img_path,name = instance[ : -3], instance[-3], instance[-2],instance[-1]
+            # st.write(label ,mod)
+            if label== mod:
+                # st.write(img_path,label)
+                distances.append((img_path,  label,name))
+
+            distances.sort(key=lambda x: x[1])
+    # st.write(distances)
+    return distances[ : num_results]

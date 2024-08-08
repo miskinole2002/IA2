@@ -1,11 +1,13 @@
 from descriptor import GLCM,bitdesc
 from PIL import Image
 import numpy as np
-from distances import manhattan,canbera,chebyshev,eucludienne,retrieve_similar_image,retrieve_similar_image2
+from distances import manhattan,canbera,chebyshev,eucludienne,retrieve_similar_image,retrieve_similar_image2,retrieve_with_image_name
 path,patha,pathb='image\img.jpg','image\img2.jpg','image\img3.jpg'
 import streamlit as st
 import joblib
-import page as pg
+import time
+
+
 
 def main():
     st.title("moteur de recherche ")
@@ -86,7 +88,7 @@ def main():
         
 
    
-    Page1,Page2,page3=st.tabs(['CBIR','CBIR++','CBIR++'])
+    Page1,Page2,page3=st.tabs(['CBIR','CBIR++','CBIR+++'])
    
     
     query_features=GLCM('./uploaded_image.png') if (radio_value=='GLCM') else(bitdesc('./uploaded_image.png'))
@@ -99,30 +101,51 @@ def main():
     features_db=sign
     distance=dropdown_value
     num_results=slider_value
-
+    # st.write(features_db)
 
     results1=  retrieve_similar_image(features_db, query_features, distance, num_results,str(mo[0]))
     
     # st.write(results)
     with Page1:
         results=  retrieve_similar_image2(features_db, query_features, distance, num_results)
-        # st.write(results)
-        for result in results:
-            # st.image(result[0])
-            #if(result[2]==str(mo[0])):
+        
+        col1=st.columns(3)
 
-                st.image(result[0])
-                st.write(result[2])
+        for i,result in enumerate(results):
+                
+                col1[i%3].image(result[0],result[2])
+
+                # st.image(result[0])
+                # st.write(result[2])
             
     with Page2:
         results1=  retrieve_similar_image(features_db, query_features, distance, num_results,str(mo[0]))
-        # st.write(results1)
-        for result in results1:
-            # st.image(result[0])
-            #if(result[2]==str(mo[0])):
+       
+        col2=st.columns(3)
+        for i,result in enumerate(results1):
+                col2[i%3].image(result[0],result[3])
+            
 
-                st.image(result[0])
-                st.write(result[3])  
+                 
+    with page3:
+         
+         sentences= st.text_input('entrez une phrase de recherche ')
+         class_list={'fire','nofire','iris-setosa','iris-versicolour','iris-virginica'}
+         list={'fire':1,'nofire':2,'iris-setosa':3,'iris-versicolour':4,'iris-virginica':5}
+         col= st.columns(3)
+         if sentences:
+            X_list=[]
+            for x in class_list:
+                if x.lower() in sentences.lower():
+                    X_list.append(x)
+                    for y in X_list:
+                        results2=retrieve_with_image_name(features_db,num_results,str(list[y]))
+                   
+                        
+                    for i, result in enumerate(results2):
+                          col[i%3].image(result[0],result[2])
+                           
+               
 
 if __name__=='__main__' :
     main()

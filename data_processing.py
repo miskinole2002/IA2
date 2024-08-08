@@ -3,6 +3,7 @@ import cv2,os, numpy as np
 from descriptor import GLCM,bitdesc
 from PIL import Image
 
+" astype['str']"
 
 def extract_features(image_path,descriptor):
     Img=cv2.imread(image_path)
